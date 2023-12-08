@@ -23,5 +23,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(str(a), str(b[key]))
         self.assertTrue(a is b[key])
 
+
 if __name__ == "__main__":
     unittest.main()
