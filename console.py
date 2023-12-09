@@ -4,13 +4,14 @@ import cmd
 from shlex import split
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
     """Defines methods for the commands allowed by the interpreter."""
 
     prompt = "(hbnb) "
-    __cls = {"BaseModel"}
+    __cls = {"BaseModel", "User"}
 
     def do_create(self, class_name):
         """Creates a new instance of BaseModel, saves it (to the JSON file) and
