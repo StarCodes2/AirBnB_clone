@@ -51,5 +51,6 @@ class TestBaseModel(unittest.TestCase):
                                         a.id, a.__dict__)
         self.assertEqual(str(a), cmp_str)
 
+
 if __name__ == "__main__":
     unittest.main()
