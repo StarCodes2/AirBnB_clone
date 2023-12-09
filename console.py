@@ -100,7 +100,10 @@ class HBNBCommand(cmd.Cmd):
             if key not in objs:
                 print("** no instance found. **")
             else:
-                objs[key].__dict__[args[2]] = args[3]
+                try:
+                    objs[key].__dict__[args[2]] = eval(args[3])
+                except Exception:
+                    objs[key].__dict__[args[2]] = args[3]
                 objs[key].save()
         except SyntaxError:
             print("** class name missing **")
@@ -121,9 +124,30 @@ class HBNBCommand(cmd.Cmd):
         "EOF command to exit the program."
         return True
 
+    def count(self, line):
+        """Counts the number of instance of a given class that exist."""
+        count = 0
+        if line not in self.__cls:
+            print("** class doesn't exist **")
+        else:
+            objs = storage.all()
+            for key in objs:
+                class_name = key.split(".")
+                if class_name[0] == line:
+                    count += 1
+            print(count)
+
     def emptyline(self):
         """Overrides the base class method emptyline() to do nothing."""
         pass
+
+    def default(self, line):
+        """Overrides the default() methods to use custom commands."""
+        args = line.split(".")
+        if (args[1] == "all()"):
+            self.do_all(args[0])
+        elif (args[1] == "count()"):
+            self.count(args[0])
 
 
 if __name__ == "__main__":
