@@ -5,13 +5,24 @@ from shlex import split
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """Defines methods for the commands allowed by the interpreter."""
 
     prompt = "(hbnb) "
-    __cls = {"BaseModel", "User"}
+    __cls = {"BaseModel",
+             "User",
+             "Place",
+             "State",
+             "City",
+             "Amenity",
+             "Review"}
 
     def do_create(self, class_name):
         """Creates a new instance of BaseModel, saves it (to the JSON file) and
@@ -86,14 +97,15 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
-            args = line.split(" ")
+            value = line.split('"')
+            args = value[0].split(" ")
             if args[0] not in self.__cls:
                 raise NameError()
             if len(args) < 2:
                 raise IndexError()
             if len(args) < 3:
                 raise AttributeError()
-            if len(args) < 4:
+            if len(value) < 2:
                 raise ValueError()
 
             objs = storage.all()
@@ -101,10 +113,7 @@ class HBNBCommand(cmd.Cmd):
             if key not in objs:
                 print("** no instance found. **")
             else:
-                try:
-                    objs[key].__dict__[args[2]] = eval(args[3])
-                except Exception:
-                    objs[key].__dict__[args[2]] = args[3]
+                objs[key].__dict__[args[2]] = value[1]
                 objs[key].save()
         except SyntaxError:
             print("** class name missing **")
