@@ -111,7 +111,7 @@ class HBNBCommand(cmd.Cmd):
             objs = storage.all()
             key = args[0] + "." + args[1]
             if key not in objs:
-                print("** no instance found. **")
+                print("** no instance found **")
             else:
                 objs[key].__dict__[args[2]] = value[1]
                 objs[key].save()
