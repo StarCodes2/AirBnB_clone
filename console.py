@@ -99,13 +99,16 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             value = line.split('"')
             args = value[0].split(" ")
+            if len(value) > 1 and len(args) > 3 and args[3] == "":
+                args[3] = '"' + value[1] + '"'
+
             if args[0] not in self.__cls:
                 raise NameError()
-            if len(args) < 2:
+            if len(args) < 2 or args[1] == "":
                 raise IndexError()
-            if len(args) < 3:
+            if len(args) < 3 or args[2] == "":
                 raise AttributeError()
-            if len(value) < 2:
+            if len(args) < 4:
                 raise ValueError()
 
             objs = storage.all()
@@ -113,7 +116,10 @@ class HBNBCommand(cmd.Cmd):
             if key not in objs:
                 print("** no instance found **")
             else:
-                objs[key].__dict__[args[2]] = value[1]
+                try:
+                    objs[key].__dict__[args[2]] = eval(args[3])
+                except Exception:
+                    objs[key].__dict__[args[2]] = args[3]
                 objs[key].save()
         except SyntaxError:
             print("** class name missing **")
@@ -154,10 +160,13 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """Overrides the default() methods to use custom commands."""
         args = line.split(".")
-        if (args[1] == "all()"):
-            self.do_all(args[0])
-        elif (args[1] == "count()"):
-            self.count(args[0])
+        if len(args) > 1:
+            if (args[1] == "all()"):
+                self.do_all(args[0])
+            elif (args[1] == "count()"):
+                self.count(args[0])
+        else:
+            cmd.Cmd.default(self, line)
 
 
 if __name__ == "__main__":
