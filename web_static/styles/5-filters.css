@@ -7,6 +7,30 @@
 	border-radius: 4px;
 }
 
+.filters .locations {
+	display: inline-block;
+	height: 100%;
+	width: 25%;
+	border-right: 1px solid #DDDDDD;
+}
+
+.filters .amenities {
+	display: inline-block;
+	height: 100%;
+	width: 25%;
+}
+
+.filters div h3 {
+	font-weight: 600;
+	margin: 7% 10% 0 10%;
+}
+
+.filters div h4 {
+	font-weight: 400;
+	font-size: 14px;
+	margin: 0 10% 7% 10%;
+}
+
 button {
 	position: absolute;
 	background: #FF5A5F;
